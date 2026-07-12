@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公文写作 Agent · 技术探索与整体设计思路</title>
+<style>
+  :root{
+    --bg:#EFEBDD;
+    --bg-card:#FBF9F2;
+    --bg-card-2:#F3EEE0;
+    --ink:#2A241D;
+    --ink-dim:#6E6455;
+    --seal:#A6332A;
+    --seal-tint:rgba(166,51,42,.09);
+    --bronze:#8C6D12;
+    --bronze-tint:rgba(140,109,18,.09);
+    --slate:#3D5163;
+    --slate-tint:rgba(61,81,99,.09);
+    --line:rgba(42,36,29,.18);
+    --line-soft:rgba(42,36,29,.10);
+    --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+    --font-body:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,-apple-system,sans-serif;
+    --font-mono:"JetBrains Mono","SF Mono",Consolas,"Courier New",monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;overflow:hidden;
+    background:var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(42,36,29,0.055) 0px, rgba(42,36,29,0.055) 1px, transparent 1px, transparent 36px),
+      repeating-linear-gradient(90deg, rgba(42,36,29,0.055) 0px, rgba(42,36,29,0.055) 1px, transparent 1px, transparent 36px);
+    color:var(--ink);
+    font-family:var(--font-body);
+  }
+  ::selection{ background:var(--seal); color:#fff; }
+  :focus-visible{ outline:2px solid var(--seal); outline-offset:3px; }
+
+  #track{ height:100vh; width:1700vw; display:flex; transition: transform .45s cubic-bezier(.65,0,.35,1); will-change: transform; }
+  @media (prefers-reduced-motion: reduce){ #track{ transition:none; } *{ animation:none !important; } }
+
+  .slide{ width:100vw; height:100vh; flex:0 0 100vw; display:flex; flex-direction:column;
+    padding: clamp(28px,5vh,64px) clamp(28px,7vw,120px); position:relative; }
+  .eyebrow{ font-family:var(--font-mono); font-size:.86rem; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--seal); margin:0 0 14px 0; display:flex; align-items:center; gap:10px; font-weight:600; }
+  .eyebrow::before{ content:""; width:22px; height:1.5px; background:var(--seal); display:inline-block; }
+  .slide-title{ font-family:var(--font-display); font-weight:700; font-size:clamp(1.9rem,3.6vw,3.1rem);
+    line-height:1.28; margin:0 0 6px 0; letter-spacing:.01em; color:var(--ink); }
+  .headrule{ width:64px; height:6px; margin:14px 0 24px 0; position:relative; }
+  .headrule::before,.headrule::after{ content:""; position:absolute; left:0; width:100%; height:1.5px; background:var(--seal); }
+  .headrule::before{ top:0; } .headrule::after{ top:4px; }
+  .slide-sub{ font-size:clamp(1.05rem,1.6vw,1.3rem); color:var(--ink-dim); max-width:62ch; line-height:1.7; margin:0 0 8px 0; }
+  .content{ flex:1; display:flex; flex-direction:column; justify-content:center; min-height:0; }
+  .caption{ margin-top:22px; font-size:1.08rem; color:var(--ink-dim); line-height:1.8; max-width:72ch; }
+  .caption b, .caption strong{ color:var(--ink); font-weight:700; }
+  .quote{ font-family:var(--font-display); font-size:clamp(1.25rem,2vw,1.7rem); color:var(--ink);
+    border-left:3px solid var(--seal); padding-left:20px; margin:22px 0; }
+
+  .chip{ display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:.88rem;
+    padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:var(--bg-card);
+    color:var(--ink-dim); white-space:nowrap; }
+  .chip .dot{ width:7px;height:7px;border-radius:50%; background:var(--slate); flex:none; }
+  .chip.c-red .dot{ background:var(--seal); } .chip.c-red{ border-color:rgba(166,51,42,.4); color:var(--seal); background:var(--seal-tint); }
+  .chip.c-gold .dot{ background:var(--bronze); } .chip.c-gold{ border-color:rgba(140,109,18,.4); color:var(--bronze); background:var(--bronze-tint); }
+  .chip.c-slate .dot{ background:var(--slate); } .chip.c-slate{ border-color:rgba(61,81,99,.4); color:var(--slate); background:var(--slate-tint); }
+  .chip-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
+
+  .flow{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .flow.col{ flex-direction:column; align-items:flex-start; }
+  .flow-node{ border:1px solid var(--line); background:var(--bg-card); border-radius:10px; padding:18px 22px;
+    min-width:150px; position:relative; padding-left:26px; }
+  .flow-node::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:10px 0 0 10px; background:var(--slate); }
+  .flow-node.n-red::before{ background:var(--seal); }
+  .flow-node.n-gold::before{ background:var(--bronze); }
+  .flow-node .t{ font-weight:700; font-size:1.12rem; }
+  .flow-node .s{ font-family:var(--font-mono); font-size:.84rem; color:var(--ink-dim); margin-top:5px; }
+  .arrow{ color:var(--ink-dim); flex:none; opacity:.75; } .arrow svg{ width:22px; height:22px; display:block; }
+  .branch-box{ border:1px dashed var(--line); border-radius:10px; padding:16px; display:flex; gap:14px; flex-wrap:wrap; position:relative; }
+  .branch-label{ font-family:var(--font-mono); font-size:.76rem; color:var(--ink-dim); position:absolute; top:-11px; left:14px; background:var(--bg); padding:0 6px; }
+
+  .pair{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+
+  .num-list{ display:flex; flex-direction:column; max-width:760px; }
+  .num-item{ display:flex; gap:26px; align-items:flex-start; padding:24px 0; border-bottom:1px solid var(--line); }
+  .num-item:last-child{ border-bottom:none; }
+  .num-item .n{ font-family:var(--font-display); font-size:2.7rem; font-weight:700; color:var(--seal); line-height:1; flex:none; width:66px; }
+  .num-item.alt .n{ color:var(--slate); }
+  .num-item .body{ flex:1; min-width:0; }
+  .num-item h3{ font-family:var(--font-display); font-size:1.4rem; margin:2px 0 8px; }
+  .num-item p{ margin:0; color:var(--ink-dim); font-size:1.05rem; line-height:1.75; max-width:56ch; }
+
+  .stepper{ display:flex; align-items:flex-start; gap:0; }
+  .step{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 8px; }
+  .step .circ{ width:58px;height:58px;border-radius:50%; background:var(--bg-card); border:2px solid var(--slate);
+    display:flex; align-items:center; justify-content:center; margin:0 0 16px; font-family:var(--font-mono);
+    font-weight:700; font-size:1.2rem; color:var(--slate); }
+  .step.last .circ{ border-color:var(--bronze); color:var(--bronze); background:var(--bronze-tint); }
+  .step h4{ font-family:var(--font-display); font-size:1.12rem; margin:0 0 8px; }
+  .step p{ margin:0; font-size:.92rem; color:var(--ink-dim); line-height:1.6; }
+  .steplink{ flex:0 0 44px; height:1.5px; background:var(--line); margin-top:28px; }
+
+  .timeline{ position:relative; padding-left:30px; max-width:640px; }
+  .timeline::before{ content:""; position:absolute; left:9px; top:6px; bottom:6px; width:1.5px; background:var(--line); }
+  .tl-item{ position:relative; padding-bottom:28px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{ content:""; position:absolute; left:-30px; top:3px; width:12px; height:12px; border-radius:50%;
+    background:var(--bg-card); border:2.5px solid var(--slate); }
+  .tl-item.tl-branch::before{ border-color:var(--bronze); }
+  .tl-item .tt{ font-weight:700; font-size:1.1rem; margin-bottom:5px; }
+  .tl-item .td2{ font-size:.95rem; color:var(--ink-dim); line-height:1.6; }
+  .tl-branch-row{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+
+  .hits{ display:flex; flex-direction:column; gap:11px; }
+  .hit{ display:flex; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--line); border-radius:8px; background:var(--bg-card); }
+  .hit .bar{ width:36px; height:7px; border-radius:4px; background:var(--line); flex:none; overflow:hidden; }
+  .hit .bar span{ display:block; height:100%; border-radius:4px; }
+  .hit.low{ opacity:.62; border-style:dashed; }
+  .hit.low .bar span{ width:28%; background:var(--slate); }
+  .hit.high .bar span{ width:88%; background:var(--seal); }
+  .hit .tl{ font-size:1rem; color:var(--ink); }
+  .hit .tl .m{ display:block; font-family:var(--font-mono); font-size:.78rem; color:var(--ink-dim); margin-top:3px; }
+
+  .dialogue{ display:flex; flex-direction:column; gap:14px; max-width:660px; }
+  .msg{ display:flex; gap:12px; align-items:flex-start; }
+  .msg .who{ font-family:var(--font-mono); font-size:.82rem; color:var(--ink-dim); width:70px; flex:none; padding-top:12px; text-align:right; }
+  .msg .bubble{ border:1px solid var(--line); background:var(--bg-card); border-radius:12px; padding:12px 18px; font-size:1.02rem; }
+  .msg.expert .bubble{ border-color:rgba(61,81,99,.45); }
+  .msg .src{ font-family:var(--font-mono); font-size:.78rem; color:var(--slate); margin-top:5px; }
+
+  .radial{ display:flex; justify-content:center; }
+  .radial svg{ width:100%; max-width:760px; height:auto; }
+
+  .window{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--bg-card); }
+  .window-bar{ display:flex; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid var(--line); }
+  .window-bar .wd{ width:10px;height:10px;border-radius:50%; background:var(--line); }
+  .window-bar .title{ font-family:var(--font-mono); font-size:.82rem; color:var(--ink-dim); margin-left:6px; }
+  .window-body{ display:flex; min-height:230px; }
+  .win-col{ padding:18px; } .win-col.left{ width:38%; border-right:1px solid var(--line); } .win-col.right{ flex:1; }
+  .outline-row{ display:flex; align-items:center; gap:9px; padding:9px 11px; border-radius:8px; font-size:.98rem; margin-bottom:5px; color:var(--ink-dim); }
+  .outline-row.active{ background:var(--seal-tint); color:var(--ink); border:1px solid rgba(166,51,42,.35); font-weight:600; }
+  .outline-row .handle{ font-family:var(--font-mono); color:var(--ink-dim); opacity:.5; font-size:.85rem; }
+  .field-label{ font-family:var(--font-mono); font-size:.76rem; color:var(--ink-dim); margin:14px 0 7px; text-transform:uppercase; letter-spacing:.08em; }
+  .field-box{ border:1px solid var(--line); border-radius:8px; padding:11px 13px; font-size:.96rem; color:var(--ink); margin-bottom:5px; background:var(--bg); }
+  .need-row{ display:flex; align-items:center; gap:8px; font-size:.94rem; padding:6px 0; }
+
+  table.slots{ width:100%; border-collapse:collapse; font-size:1.02rem; }
+  table.slots th{ text-align:left; font-family:var(--font-mono); font-size:.8rem; letter-spacing:.06em; color:var(--ink-dim);
+    text-transform:uppercase; padding:10px 14px; border-bottom:1.5px solid var(--line); }
+  table.slots td{ padding:14px; border-bottom:1px solid var(--line-soft); }
+  table.slots tr:last-child td{ border-bottom:none; }
+  table.slots tr:nth-child(even) td{ background:var(--bg-card-2); }
+  .status{ font-family:var(--font-mono); font-size:.96rem; display:inline-flex; align-items:center; gap:6px; font-weight:600; }
+  .status.done{ color:var(--bronze); } .status.pending{ color:var(--slate); } .status.ask{ color:var(--seal); }
+
+  .recipe-in{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+  .recipe-out{ margin-top:20px; border:1px solid var(--line); background:var(--bg-card); border-radius:12px;
+    padding:22px 26px; max-width:580px; margin-left:auto; margin-right:auto; text-align:left; }
+  .recipe-out .lbl{ font-family:var(--font-mono); font-size:.78rem; color:var(--bronze); margin-bottom:8px; font-weight:700; }
+  .recipe-out p{ margin:0; font-size:1.02rem; color:var(--ink-dim); line-height:1.75; }
+  .funnel{ display:flex; justify-content:center; margin:8px 0; color:var(--ink-dim); }
+
+  .doc-grid{ display:grid; grid-template-columns:1fr 210px; gap:0 20px; max-width:780px; }
+  .doc-line{ padding:12px 0; border-bottom:1px dashed var(--line-soft); font-size:1.02rem; color:var(--ink-dim); line-height:1.75; display:flex; align-items:center; }
+  .doc-note{ padding:12px 0; border-bottom:1px dashed var(--line-soft); display:flex; align-items:center; }
+  .doc-note .tag{ font-family:var(--font-mono); font-size:.8rem; color:var(--seal); border:1px solid rgba(166,51,42,.4);
+    border-radius:6px; padding:5px 9px; position:relative; background:var(--seal-tint); }
+  .doc-note .tag::before{ content:"←"; position:absolute; left:-16px; color:var(--seal); }
+
+  .tickets{ display:flex; gap:24px; flex-wrap:wrap; }
+  .ticket{ flex:1; min-width:280px; background:var(--bg-card); border:1px solid var(--line); border-radius:10px;
+    padding:24px 26px; border-left:3px dashed var(--seal); }
+  .ticket.t-gold{ border-left-color:var(--bronze); }
+  .ticket .badge{ font-family:var(--font-mono); font-size:.82rem; color:var(--ink-dim); font-weight:600; }
+  .ticket h3{ font-family:var(--font-display); font-size:1.35rem; margin:10px 0 10px; }
+  .ticket p{ margin:0; color:var(--ink-dim); font-size:1.02rem; line-height:1.75; }
+
+  .pin-row{ display:flex; gap:30px; justify-content:center; padding-top:16px; }
+  .pin{ flex:1; max-width:270px; background:var(--bg-card); border:1px solid var(--line); border-radius:4px; padding:24px;
+    box-shadow:0 8px 18px rgba(42,36,29,.10); position:relative; }
+  .pin:nth-child(1){ transform:rotate(-1.6deg) translateY(6px); }
+  .pin:nth-child(2){ transform:rotate(1.1deg) translateY(-6px); }
+  .pin:nth-child(3){ transform:rotate(-0.9deg) translateY(8px); }
+  .pin::before{ content:""; position:absolute; top:-7px; left:50%; transform:translateX(-50%); width:11px; height:11px;
+    border-radius:50%; background:var(--seal); box-shadow:0 1px 3px rgba(0,0,0,.3); }
+  .pin .badge{ font-family:var(--font-mono); font-size:.82rem; color:var(--seal); font-weight:700; }
+  .pin h3{ font-family:var(--font-display); font-size:1.25rem; margin:10px 0 8px; }
+  .pin p{ margin:0; font-size:.96rem; color:var(--ink-dim); line-height:1.65; }
+
+  .progress{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line-soft); z-index:50; }
+  .progress .bar{ height:100%; width:5.9%; background:var(--seal); transition:width .4s ease; }
+  .dots{ position:fixed; right:22px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:9px; z-index:50; }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--line); border:none; cursor:pointer; padding:0; transition:all .25s ease; }
+  .dot.active{ height:22px; border-radius:5px; background:var(--seal); }
+  .deckmark{ position:fixed; left:26px; bottom:22px; font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em;
+    color:var(--ink-dim); opacity:.65; z-index:50; text-transform:uppercase; }
+  .navbtns{ position:fixed; bottom:22px; left:50%; transform:translateX(-50%); display:flex; gap:10px; align-items:center; z-index:50; }
+  .navbtn{ width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:var(--bg-card);
+    color:var(--ink-dim); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .navbtn:hover{ border-color:var(--seal); color:var(--seal); }
+  .navhint{ font-family:var(--font-mono); font-size:.7rem; color:var(--ink-dim); opacity:.55; padding:0 6px; }
+
+  .seal{ position:fixed; right:26px; bottom:20px; z-index:50; transform:rotate(-7deg); color:var(--seal); opacity:.92; pointer-events:none; }
+  .seal .ch{ font-family:var(--font-display); font-size:20px; font-weight:700; }
+  .seal .num{ font-family:var(--font-mono); font-size:11px; }
+
+  @media (max-width: 860px){
+    .pair{ grid-template-columns:1fr; }
+    .flow{ flex-direction:column; align-items:stretch; }
+    .flow .arrow svg{ transform:rotate(90deg); }
+    .stepper{ flex-direction:column; align-items:flex-start; }
+    .steplink{ display:none; }
+    .window-body{ flex-direction:column; }
+    .win-col.left{ width:100%; border-right:none; border-bottom:1px solid var(--line); }
+    .dots{ display:none; }
+    .doc-grid{ grid-template-columns:1fr; }
+    .doc-note .tag::before{ content:"↑"; left:0; top:-16px; }
+    .pin-row{ flex-direction:column; align-items:center; }
+    .pin{ transform:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="ic-ar" viewBox="0 0 24 24"><path d="M4 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-ad" viewBox="0 0 24 24"><path d="M12 4v13M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-chevl" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-chevr" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="progress"><div class="bar" id="progressBar"></div></div>
+<nav class="dots" id="dots"></nav>
+<div class="deckmark">公文写作 Agent · 技术预研</div>
+<div class="navbtns">
+  <button class="navbtn" id="btnPrev" aria-label="上一页"><svg width="16" height="16"><use href="#ic-chevl"/></svg></button>
+  <span class="navhint">← →  切换</span>
+  <button class="navbtn" id="btnNext" aria-label="下一页"><svg width="16" height="16"><use href="#ic-chevr"/></svg></button>
+</div>
+<div class="seal" aria-hidden="true">
+  <svg viewBox="0 0 120 120" width="84" height="84">
+    <circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="2.4"/>
+    <circle cx="60" cy="60" r="44" fill="none" stroke="currentColor" stroke-width="1"/>
+    <text x="60" y="50" text-anchor="middle" class="ch">稿</text>
+    <text x="60" y="78" text-anchor="middle" class="num" id="pageNow">01</text>
+    <text x="60" y="90" text-anchor="middle" class="num" style="font-size:9px">/<tspan id="pageTotal">17</tspan></text>
+  </svg>
+</div>
+
+<main id="track">
+
+<section class="slide" style="justify-content:center;align-items:flex-start;">
+  <div class="eyebrow">技术分享 · 内部预研</div>
+  <h1 class="slide-title" style="font-size:clamp(2.5rem,6vw,4.6rem);">公文写作 Agent</h1>
+  <div class="headrule"></div>
+  <p class="slide-sub" style="font-size:clamp(1.1rem,1.9vw,1.4rem);">技术探索与整体设计思路</p>
+  <div class="chip-row" style="margin-top:28px;">
+    <span class="chip c-slate">汇报人 · ___</span>
+    <span class="chip c-slate">团队 · ___</span>
+    <span class="chip c-slate">2026</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">问题 · 01</div>
+  <h2 class="slide-title">为什么不能直接让"裸模型"写公文</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="num-list">
+      <div class="num-item">
+        <div class="n">01</div>
+        <div class="body">
+          <h3>事实幻觉</h3>
+          <p>编造政策文号、编造数据、张冠李戴的部门职责。公文里的"合理编造"是<b style="color:var(--seal)">事故</b>，不是瑕疵。</p>
+        </div>
+      </div>
+      <div class="num-item alt">
+        <div class="n">02</div>
+        <div class="body">
+          <h3>格式与文种刚性</h3>
+          <p>GB/T 9704-2012 的版头、字体、层次序数，15 种法定文种各有行文方向与惯用语——文种用错，文件直接作废。</p>
+        </div>
+      </div>
+    </div>
+    <p class="caption">结论 → 需要一套流程，把 <b>事实</b> 和 <b>规矩</b> 喂给模型，模型只负责最后成文。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">问题 · 02</div>
+  <h2 class="slide-title">没有对口方案，我们做了一次"问题抽象"</h2>
+  <div class="headrule"></div>
+  <div class="content" style="align-items:center;">
+    <div class="flow col" style="align-items:center;">
+      <div class="flow-node n-red" style="text-align:center;min-width:280px;">
+        <div class="t">公文写作 Agent</div>
+        <div class="s">没有直接对口的开源方案</div>
+      </div>
+      <div class="arrow"><svg><use href="#ic-ad"/></svg></div>
+      <div class="chip c-gold" style="font-size:.9rem;padding:8px 16px;">问题抽象 / 类比迁移</div>
+      <div class="arrow"><svg><use href="#ic-ad"/></svg></div>
+      <div class="flow-node n-gold" style="text-align:center;min-width:340px;">
+        <div class="t">结构化长文生成 / Research Agent</div>
+        <div class="s">这条技术脉络已被深入研究</div>
+      </div>
+    </div>
+    <div class="chip-row" style="margin-top:22px;justify-content:center;">
+      <span class="chip c-slate">先检索、后动笔</span>
+      <span class="chip c-slate">强依赖大纲结构</span>
+      <span class="chip c-slate">事实需可溯源</span>
+    </div>
+    <p class="caption" style="text-align:center;max-width:60ch;margin-left:auto;margin-right:auto;">公文写作在方法论层面，本质是"检索增强的结构化长文生成"——于是我们把研究对象从"公文专属工具"，转向了 research agent 这条更成熟的技术脉络。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">方法论 · STORM</div>
+  <h2 class="slide-title">STORM —— 这条技术脉络的开山之作</h2>
+  <div class="headrule"></div>
+  <div class="chip-row">
+    <span class="chip">Stanford OVAL</span>
+    <span class="chip">NAACL 2024</span>
+    <span class="chip">27k+ ★ GitHub</span>
+  </div>
+  <div class="content">
+    <div class="stepper">
+      <div class="step"><div class="circ">1</div><h4>知识整编</h4><p>检索 + 多视角提问</p></div>
+      <div class="steplink"></div>
+      <div class="step"><div class="circ">2</div><h4>大纲生成</h4><p>基于整编知识修订</p></div>
+      <div class="steplink"></div>
+      <div class="step"><div class="circ">3</div><h4>文章生成</h4><p>按大纲逐节撰写</p></div>
+      <div class="steplink"></div>
+      <div class="step last"><div class="circ">4</div><h4>文章润色</h4><p>去冗余、提连贯</p></div>
+    </div>
+    <p class="caption">后续 Co-STORM、OmniThink 等一系列工作，均由此衍生。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">STORM 机制一</div>
+  <h2 class="slide-title">视角引导提问</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="radial">
+      <svg viewBox="0 0 640 300">
+        <line x1="320" y1="150" x2="140" y2="58" stroke="#C9C2AE" stroke-width="1.3"/>
+        <line x1="320" y1="150" x2="500" y2="58" stroke="#C9C2AE" stroke-width="1.3"/>
+        <line x1="320" y1="150" x2="140" y2="242" stroke="#C9C2AE" stroke-width="1.3"/>
+        <line x1="320" y1="150" x2="500" y2="242" stroke="#C9C2AE" stroke-width="1.3"/>
+        <circle cx="320" cy="150" r="48" fill="#FBF9F2" stroke="#A6332A" stroke-width="1.8"/>
+        <text x="320" y="156" text-anchor="middle" fill="#2A241D" font-size="18" font-family="serif" font-weight="700">主题</text>
+
+        <rect x="55" y="30" width="170" height="56" rx="9" fill="#FBF9F2" stroke="#3D5163" stroke-width="1.2"/>
+        <text x="140" y="53" text-anchor="middle" fill="#2A241D" font-size="15" font-weight="600">时间线视角</text>
+        <text x="140" y="72" text-anchor="middle" fill="#3D5163" font-size="12.5" font-family="monospace">编年梳理</text>
+
+        <rect x="415" y="30" width="170" height="56" rx="9" fill="#FBF9F2" stroke="#3D5163" stroke-width="1.2"/>
+        <text x="500" y="53" text-anchor="middle" fill="#2A241D" font-size="15" font-weight="600">影响视角</text>
+        <text x="500" y="72" text-anchor="middle" fill="#3D5163" font-size="12.5" font-family="monospace">波及范围</text>
+
+        <rect x="55" y="212" width="170" height="56" rx="9" fill="#FBF9F2" stroke="#3D5163" stroke-width="1.2"/>
+        <text x="140" y="235" text-anchor="middle" fill="#2A241D" font-size="15" font-weight="600">争议视角</text>
+        <text x="140" y="254" text-anchor="middle" fill="#3D5163" font-size="12.5" font-family="monospace">分歧焦点</text>
+
+        <rect x="415" y="212" width="170" height="56" rx="9" fill="#FBF9F2" stroke="#3D5163" stroke-width="1.2"/>
+        <text x="500" y="235" text-anchor="middle" fill="#2A241D" font-size="15" font-weight="600">基础事实视角</text>
+        <text x="500" y="254" text-anchor="middle" fill="#3D5163" font-size="12.5" font-family="monospace">兜底覆盖</text>
+      </svg>
+    </div>
+    <p class="caption" style="text-align:center;max-width:64ch;margin:14px auto 0;">先调研同类文章的目录结构，归纳出多个"视角"，各视角独立驱动提问，避免单一视角越问越窄。<br>→ 我们的改造：<b>文种级静态视角库</b> + <b>范文动态补充视角</b>。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">STORM 机制二</div>
+  <h2 class="slide-title">模拟对话</h2>
+  <div class="headrule"></div>
+  <div class="content" style="align-items:center;">
+    <div class="dialogue">
+      <div class="msg"><div class="who">写作者</div><div class="bubble">这类政策通常涉及哪些部门？</div></div>
+      <div class="msg expert"><div class="who">专家</div><div><div class="bubble">主要涉及住建、财政两个部门。<div class="src">🔍 检索：市住建局 2025 年度实施细则</div></div></div></div>
+      <div class="msg"><div class="who">写作者</div><div class="bubble">财政这边的资金分担比例是多少？</div></div>
+      <div class="msg expert"><div class="who">专家</div><div><div class="bubble">市级承担 60%，区级承担 40%。<div class="src">🔍 检索：财政专项资金管理办法 第 7 条</div></div></div></div>
+    </div>
+    <p class="caption" style="text-align:center;max-width:60ch;">追问基于对话历史，问题逐轮从宽泛到具体；专家被禁止凭空回答，必须先检索再合成。<br>→ 我们的改造：<b>拟稿人 agent ↔ 知识库专家 agent ↔ 用户</b> 三方对话。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">STORM 演进</div>
+  <h2 class="slide-title">Co-STORM —— 协作话语</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="radial">
+      <svg viewBox="0 0 640 300">
+        <line x1="320" y1="150" x2="150" y2="68" stroke="#C9C2AE" stroke-width="1.3"/>
+        <line x1="320" y1="150" x2="490" y2="68" stroke="#C9C2AE" stroke-width="1.3"/>
+        <line x1="320" y1="150" x2="320" y2="253" stroke="#C9C2AE" stroke-width="1.3"/>
+
+        <circle cx="320" cy="150" r="4.5" fill="#8C6D12"/>
+        <circle cx="280" cy="129" r="28" fill="#FBF9F2" stroke="#8C6D12" stroke-width="1.5"/>
+        <circle cx="347" cy="113" r="21" fill="#FBF9F2" stroke="#8C6D12" stroke-width="1.3"/>
+        <circle cx="330" cy="176" r="19" fill="#FBF9F2" stroke="#8C6D12" stroke-width="1.2"/>
+        <text x="320" y="207" text-anchor="middle" fill="#8C6D12" font-size="13" font-family="monospace" font-weight="600">动态思维导图</text>
+
+        <rect x="60" y="38" width="165" height="54" rx="9" fill="#FBF9F2" stroke="#A6332A" stroke-width="1.2"/>
+        <text x="142" y="61" text-anchor="middle" fill="#2A241D" font-size="15" font-weight="600">专家 agent</text>
+        <text x="142" y="80" text-anchor="middle" fill="#A6332A" font-size="12" font-family="monospace">多视角回答/追问</text>
+
+        <rect x="415" y="38" width="165" height="54" rx="9" fill="#FBF9F2" stroke="#A6332A" stroke-width="1.2"/>
+        <text x="497" y="61" text-anchor="middle" fill="#2A241D" font-size="15" font-weight="600">主持人 agent</text>
+        <text x="497" y="80" text-anchor="middle" fill="#A6332A" font-size="12" font-family="monospace">发现"未聊到"的信息</text>
+
+        <rect x="240" y="243" width="160" height="54" rx="9" fill="#FBF9F2" stroke="#A6332A" stroke-width="1.2"/>
+        <text x="320" y="266" text-anchor="middle" fill="#2A241D" font-size="15" font-weight="600">真实用户</text>
+        <text x="320" y="285" text-anchor="middle" fill="#A6332A" font-size="12" font-family="monospace">随时可插话主导</text>
+      </svg>
+    </div>
+    <p class="caption" style="text-align:center;max-width:64ch;margin:6px auto 0;">主持人专盯"检索到但没聊到"的信息，主动提问防止讨论变浅；混合主导权——用户可随时拿走话语权。<br>→ 这对我们的人机协同设计有直接启发（见环节三）。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">总体设计</div>
+  <h2 class="slide-title">五个环节，两个阶段</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="flow">
+      <div class="flow-node"><div class="t">① 公文库搭建</div><div class="s">离线</div></div>
+      <div class="arrow"><svg><use href="#ic-ar"/></svg></div>
+      <div class="flow-node n-red"><div class="t">② 混合检索</div><div class="s">在线 · 查询改写</div></div>
+      <div class="arrow"><svg><use href="#ic-ar"/></svg></div>
+      <div class="flow-node n-gold"><div class="t">③ 范文解析 + 大纲</div><div class="s">在线 · HITL</div></div>
+      <div class="arrow"><svg><use href="#ic-ar"/></svg></div>
+      <div class="flow-node n-red"><div class="t">④ 信息收集</div><div class="s">在线 · 事实槽位</div></div>
+      <div class="arrow"><svg><use href="#ic-ar"/></svg></div>
+      <div class="flow-node n-gold"><div class="t">⑤ 分段撰写</div><div class="s">在线</div></div>
+    </div>
+    <div class="chip-row" style="margin-top:20px;">
+      <span class="chip c-slate">■ 离线准备</span>
+      <span class="chip c-red">■ 在线生成</span>
+    </div>
+    <p class="caption">后面每一页，都是放大讲其中一个环节。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">环节一 · 离线</div>
+  <h2 class="slide-title">公文库搭建</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="timeline">
+      <div class="tl-item"><div class="tt">收集 + 脱敏清洗</div><div class="td2">内部沉淀公文，去除具体人名/单位名等敏感信息</div></div>
+      <div class="tl-item"><div class="tt">按文种分类打标</div><div class="td2">通知/请示/报告等 15 种法定文种归类</div></div>
+      <div class="tl-item"><div class="tt">LLM 摘要提取</div><div class="td2">从每篇公文中同时提炼内容与结构两类信息</div></div>
+      <div class="tl-item tl-branch">
+        <div class="tt">产出双资产</div>
+        <div class="tl-branch-row">
+          <span class="chip c-red">内容摘要库 · 供语义检索</span>
+          <span class="chip c-gold">结构骨架库 · 供大纲解析</span>
+        </div>
+      </div>
+      <div class="tl-item"><div class="tt">向量化入库</div><div class="td2">完成检索索引构建</div></div>
+    </div>
+    <p class="caption">"内容"和"结构"分开存，是后面"拆范文而不是抄范文"的前提。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">环节二 · 在线</div>
+  <h2 class="slide-title">查询改写 —— 检索精度的关键一跳</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="pair">
+      <div>
+        <div class="chip c-slate" style="margin-bottom:14px;">✕ 用户原话直接检索</div>
+        <div class="hits">
+          <div class="hit low"><div class="bar"><span></span></div><div class="tl">XX区物业管理若干问题的意见<span class="m">相关性 28% · 文种不匹配</span></div></div>
+          <div class="hit low"><div class="bar"><span></span></div><div class="tl">关于消防安全的若干规定<span class="m">相关性 31% · 范围过泛</span></div></div>
+          <div class="hit low"><div class="bar"><span></span></div><div class="tl">城市管理综合执法通告<span class="m">相关性 19% · 文种不匹配</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="chip c-gold" style="margin-bottom:14px;">✓ 生成假设摘要再检索</div>
+        <div class="hits">
+          <div class="hit high"><div class="bar"><span></span></div><div class="tl">辖区消防安全检查工作通知（示例）<span class="m">相关性 91% · 同文种同主题</span></div></div>
+          <div class="hit high"><div class="bar"><span></span></div><div class="tl">消防设施排查专项行动通知<span class="m">相关性 87% · 结构高度相似</span></div></div>
+          <div class="hit high"><div class="bar"><span></span></div><div class="tl">安全生产大检查实施通知<span class="m">相关性 82% · 同类文种</span></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="quote">"用假想的答案，去找真实的答案。"</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">环节三 · 上</div>
+  <h2 class="slide-title">范文解析 —— 拆结构，而非抄内容</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="doc-grid">
+      <div class="doc-line">为进一步规范辖区消防安全检查工作，根据……有关规定，现将有关事项通知如下：</div>
+      <div class="doc-note"><span class="tag">开头惯用语</span></div>
+      <div class="doc-line">一、检查范围。本次检查覆盖……二、检查内容。重点核查消防设施完好率、疏散通道畅通情况……</div>
+      <div class="doc-note"><span class="tag">核心论据段</span></div>
+      <div class="doc-line">请各单位对照上述要求抓紧自查，逾期未整改的将依法处置。特此通知。</div>
+      <div class="doc-note"><span class="tag">结尾惯用语</span></div>
+    </div>
+    <p class="caption">"范文是拿来拆的，不是拿来抄的。"<br>→ 呼应视角机制：<b>静态视角库</b> + <b>范文动态补充视角</b>。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">环节三 · 下</div>
+  <h2 class="slide-title">大纲即方向盘 —— 与用户协同确认</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="window">
+      <div class="window-bar">
+        <span class="wd" style="background:var(--seal);"></span><span class="wd"></span><span class="wd"></span>
+        <span class="title">大纲编辑器 · 待确认</span>
+      </div>
+      <div class="window-body">
+        <div class="win-col left">
+          <div class="outline-row"><span class="handle">⋮⋮</span> 一、检查背景与依据</div>
+          <div class="outline-row active"><span class="handle">⋮⋮</span> 二、检查范围与内容</div>
+          <div class="outline-row"><span class="handle">⋮⋮</span> 三、组织实施</div>
+          <div class="outline-row"><span class="handle">⋮⋮</span> 四、工作要求</div>
+        </div>
+        <div class="win-col right">
+          <div class="field-label">本段要点</div>
+          <div class="field-box">明确检查覆盖的单位范围与重点检查内容</div>
+          <div class="field-label">所需信息</div>
+          <div class="need-row">✅ 检查单位清单 · 已有</div>
+          <div class="need-row">❓ 本轮重点检查项 · 待补充</div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">大纲错了，写得越细返工越大 → 设强制关卡，用户确认/编辑后才进入写作。<br>→ 呼应 Co-STORM 主持人：未来可让系统主动提示"这个维度信息不足"。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">环节四 · 在线</div>
+  <h2 class="slide-title">事实槽位机制 —— 模型不允许自己编</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <table class="slots">
+      <thead><tr><th>槽位</th><th>状态</th><th>来源</th></tr></thead>
+      <tbody>
+        <tr><td>检查依据文号</td><td><span class="status done">✅ 已填充</span></td><td>市住建局〔2025〕17号</td></tr>
+        <tr><td>检查单位清单</td><td><span class="status done">✅ 已填充</span></td><td>私有知识库检索</td></tr>
+        <tr><td>本轮重点检查项</td><td><span class="status pending">🔍 检索中</span></td><td>知识库匹配中</td></tr>
+        <tr><td>整改时限</td><td><span class="status ask">❓ 待用户补充</span></td><td>知识库未命中</td></tr>
+      </tbody>
+    </table>
+    <p class="caption">用户输入 → 私有知识库检索 → 缺失则主动追问用户，链式取证。<br>→ 呼应模拟对话机制：拟稿人 agent 追问式检索，而非一次性查询。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">环节五 · 在线</div>
+  <h2 class="slide-title">写作配方 —— 按框架组装事实</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="recipe-in">
+      <span class="chip c-slate">本段结构框架</span>
+      <span class="chip c-red">事实槽位内容</span>
+      <span class="chip c-gold">前文摘要</span>
+      <span class="chip c-slate">全局约束</span>
+    </div>
+    <div class="funnel"><svg width="24" height="24"><use href="#ic-ad"/></svg></div>
+    <div class="recipe-out">
+      <div class="lbl">段落产出</div>
+      <p>根据市住建局〔2025〕17号文件要求，本次检查覆盖辖区内全部经营性场所，重点核查消防设施完好率与疏散通道畅通情况……</p>
+    </div>
+    <p class="caption" style="text-align:center;">成文阶段没有自由发挥的空间，模型做的是"按配方组装事实"。</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">收尾 · 上</div>
+  <h2 class="slide-title">交给下一棒：润色与格式渲染</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="tickets">
+      <div class="ticket">
+        <div class="badge">NEXT → 润色 Agent</div>
+        <h3>生成 - 评审循环</h3>
+        <p>评审 agent 按语体规范、句式凝练等维度挑问题，参照范文库的同类表述做"有据可依"的润色，而非凭感觉改写。</p>
+      </div>
+      <div class="ticket t-gold">
+        <div class="badge">NEXT → 格式渲染引擎</div>
+        <h3>确定性排版，非 LLM</h3>
+        <p>docxtpl / python-docx，按 GB/T 9704-2012 处理版头、字体、层次序数——排版这件事，不交给模型自由发挥。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">收尾 · 下</div>
+  <h2 class="slide-title">下一步值得研究的方向</h2>
+  <div class="headrule"></div>
+  <div class="content">
+    <div class="pin-row">
+      <div class="pin">
+        <div class="badge">OmniThink</div>
+        <h3>本地化检索改造</h3>
+        <p>基于 RAGFlow 支持离线本地检索，适配政务内网场景。</p>
+      </div>
+      <div class="pin">
+        <div class="badge">WebWeaver</div>
+        <h3>大纲动态修订</h3>
+        <p>大纲随证据获取持续优化，而非一次冻结。</p>
+      </div>
+      <div class="pin">
+        <div class="badge">Co-STORM</div>
+        <h3>主持人机制</h3>
+        <p>系统主动发现信息缺口，而非被动等用户确认。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" style="justify-content:center;align-items:flex-start;">
+  <div class="eyebrow">谢谢</div>
+  <h2 class="slide-title" style="font-size:clamp(2.3rem,5vw,3.8rem);">Q&amp;A</h2>
+  <div class="headrule"></div>
+  <p class="slide-sub">欢迎提问与讨论</p>
+</section>
+
+</main>
+
+<script>
+  const TOTAL = 17;
+  let idx = 0;
+  const track = document.getElementById('track');
+  const dotsWrap = document.getElementById('dots');
+  const pageNow = document.getElementById('pageNow');
+  const pageTotal = document.getElementById('pageTotal');
+  const progressBar = document.getElementById('progressBar');
+  pageTotal.textContent = String(TOTAL).padStart(2,'0');
+
+  for (let i=0;i<TOTAL;i++){
+    const b = document.createElement('button');
+    b.className = 'dot';
+    b.setAttribute('aria-label', '跳转到第 ' + (i+1) + ' 页');
+    b.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(b);
+  }
+
+  function render(){
+    track.style.transform = 'translateX(-' + (idx*100) + 'vw)';
+    progressBar.style.width = (((idx+1)/TOTAL)*100) + '%';
+    pageNow.textContent = String(idx+1).padStart(2,'0');
+    Array.from(dotsWrap.children).forEach((d,i) => d.classList.toggle('active', i===idx));
+  }
+  function goTo(i){ idx = Math.max(0, Math.min(TOTAL-1, i)); render(); }
+  function next(){ goTo(idx+1); }
+  function prev(){ goTo(idx-1); }
+
+  document.getElementById('btnPrev').addEventListener('click', prev);
+  document.getElementById('btnNext').addEventListener('click', next);
+
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { goTo(0); }
+    else if (e.key === 'End') { goTo(TOTAL-1); }
+  });
+
+  render();
+</script>
+
+</body>
+</html>

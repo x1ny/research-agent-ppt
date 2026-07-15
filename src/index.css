@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  /* Spacing and radius in px so 24px root font-size does not inflate p-/gap- utilities */
+  --spacing: 4px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-4xl: 32px;
+
+  --color-bg: #EFEBDD;
+  --color-bg-card: #FBF9F2;
+  --color-bg-card-2: #F3EEE0;
+  --color-ink: #2A241D;
+  --color-ink-dim: #6E6455;
+  --color-seal: #A6332A;
+  --color-seal-tint: rgba(166, 51, 42, 0.09);
+  --color-bronze: #8C6D12;
+  --color-bronze-tint: rgba(140, 109, 18, 0.09);
+  --color-slate: #3D5163;
+  --color-slate-tint: rgba(61, 81, 99, 0.09);
+  --color-line: rgba(42, 36, 29, 0.18);
+  --color-line-soft: rgba(42, 36, 29, 0.10);
+  --font-display: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --font-body: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Consolas, "Courier New", monospace;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-size: 24px;
+    background-color: var(--color-bg);
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgba(42, 36, 29, 0.055) 0px,
+        rgba(42, 36, 29, 0.055) 1px,
+        transparent 1px,
+        transparent 36px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(42, 36, 29, 0.055) 0px,
+        rgba(42, 36, 29, 0.055) 1px,
+        transparent 1px,
+        transparent 36px
+      );
+    color: var(--color-ink);
+    font-family: var(--font-body);
+  }
+
+  ::selection {
+    background: var(--color-seal);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-seal);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #track {
+    transition: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+}

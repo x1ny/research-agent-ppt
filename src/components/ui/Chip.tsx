@@ -1,19 +1,21 @@
 import type { CSSProperties, ReactNode } from 'react'
 
-type Variant = 'default' | 'red' | 'gold' | 'slate'
+type Variant = 'default' | 'red' | 'gold' | 'slate' | 'dim'
 
 const variantClass: Record<Variant, string> = {
-  default: 'border-line bg-bg-card text-ink-dim',
-  red: 'border-[rgba(166,51,42,0.4)] bg-seal-tint text-seal',
-  gold: 'border-[rgba(140,109,18,0.4)] bg-bronze-tint text-bronze',
-  slate: 'border-[rgba(61,81,99,0.4)] bg-slate-tint text-slate',
+  default: 'border-line bg-panel text-ink-2',
+  red: 'border-[rgba(220,91,75,0.4)] bg-neg-wash text-neg-deep',
+  gold: 'border-accent-dim bg-accent-wash text-accent-deep',
+  slate: 'border-[rgba(101,114,140,0.4)] bg-muted-tint text-muted',
+  dim: 'border-accent-dim bg-accent-wash text-accent',
 }
 
 const dotClass: Record<Variant, string> = {
-  default: 'bg-slate',
-  red: 'bg-seal',
-  gold: 'bg-bronze',
-  slate: 'bg-slate',
+  default: 'bg-muted',
+  red: 'bg-neg',
+  gold: 'bg-accent',
+  slate: 'bg-muted',
+  dim: 'bg-accent-dim',
 }
 
 type Props = {

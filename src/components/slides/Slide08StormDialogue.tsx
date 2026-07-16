@@ -2,14 +2,14 @@ import { useState, type ReactNode } from 'react'
 import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
 
 function SpeakerDot({ color }: { color: 'slate' | 'seal' | 'bronze' }) {
-  const bg = color === 'seal' ? 'bg-seal' : color === 'bronze' ? 'bg-bronze' : 'bg-slate'
+  const bg = color === 'seal' ? 'bg-accent-deep' : color === 'bronze' ? 'bg-accent' : 'bg-muted'
   return <span className={`mr-2 inline-block h-2 w-2 rounded-full ${bg}`} />
 }
 
 function CostormSource({ children }: { children: ReactNode }) {
   return (
-    <p className="!mt-2 font-mono text-[0.65rem] text-slate">
-      <span className="text-bronze">检索 / </span>
+    <p className="!mt-2 font-mono text-[0.65rem] text-muted">
+      <span className="text-accent">检索 / </span>
       {children}
     </p>
   )
@@ -18,7 +18,7 @@ function CostormSource({ children }: { children: ReactNode }) {
 function TreeDot({ accent }: { accent?: 'seal' | 'slate' }) {
   return (
     <span
-      className={`mr-2 inline-block h-[7px] w-[7px] rounded-full ${accent === 'seal' ? 'bg-seal' : 'bg-slate'}`}
+      className={`mr-2 inline-block h-[7px] w-[7px] rounded-full ${accent === 'seal' ? 'bg-accent-deep' : 'bg-muted'}`}
     />
   )
 }
@@ -28,8 +28,8 @@ export default function Slide08StormDialogue() {
 
   const tabBase =
     'cursor-pointer appearance-none rounded-full border px-[22px] py-2.5 font-mono text-[0.72rem]'
-  const tabActive = 'border-[rgba(166,51,42,0.55)] bg-seal-tint font-bold text-seal'
-  const tabInactive = 'border-line bg-bg-card text-ink-dim'
+  const tabActive = 'border-accent-dim bg-accent-wash font-bold text-accent-deep'
+  const tabInactive = 'border-line bg-panel text-ink-2'
 
   return (
     <SlideShell>
@@ -66,33 +66,33 @@ export default function Slide08StormDialogue() {
 
         <div className={`w-full ${tab === 'dialogue' ? 'block' : 'hidden'}`}>
           <div
-            className="mx-auto h-[650px] w-full max-w-[1320px] overflow-y-auto rounded-xl border border-line bg-[rgba(251,249,242,0.72)] px-[30px] pt-6 pb-7 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)] [scrollbar-color:rgba(140,109,18,0.58)_var(--color-bg-card-2)]"
+            className="mx-auto h-[650px] w-full max-w-[1320px] overflow-y-auto rounded-xl border border-line bg-[rgba(255,255,255,0.72)] px-[30px] pt-6 pb-7 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)] [scrollbar-color:rgba(37,99,235,0.5)_var(--color-panel-2)]"
             aria-label="Co-STORM 协作对话示例"
           >
-            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-bronze">
+            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-accent">
               WARM START · 先建立共享知识空间
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-seal">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-accent-deep">
                 <SpeakerDot color="seal" />
                 Moderator
                 <br />
                 主持人
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-seal bg-seal-tint px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-accent-deep bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   围绕"防汛工作方案"，除了响应流程，还需要重点核对哪些容易被忽略的维度？
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 General Knowledge
                 <br />
                 Provider · 通用专家
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   通常还要覆盖预警发布、部门职责、人员转移、物资保障、信息报送和责任追究。具体启动条件需要回到本地区现行预案核对。
                 </p>
@@ -100,30 +100,30 @@ export default function Slide08StormDialogue() {
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 Policy Expert
                 <br />
                 政策专家
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   从政策依据看，不能只写"按照有关规定执行"，还应明确上位文件名称、文号以及本方案的适用范围。
                 </p>
                 <CostormSource>政策依据 · 适用范围 · 文号</CostormSource>
               </div>
             </div>
-            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-bronze">
+            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-accent">
               ROUND 01 · 沿着回答继续收窄
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 Implementation Expert
                 <br />
                 执行专家
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   如果进入较高等级响应，乡镇一级的职责边界是什么？哪些动作可以直接启动，哪些必须逐级请示？
                 </p>
@@ -131,13 +131,13 @@ export default function Slide08StormDialogue() {
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 General Knowledge
                 <br />
                 Provider · 通用专家
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   乡镇通常负责组织转移、巡查重点设施、汇总灾情并向上级报告；但启动权限和报告对象必须核对当地预案，不能用一般结论替代具体条款。
                 </p>
@@ -145,71 +145,71 @@ export default function Slide08StormDialogue() {
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-bronze">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-accent">
                 <SpeakerDot color="bronze" />
                 Human User
                 <br />
                 用户
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-bronze bg-bronze-tint px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-accent bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   请把重点转到"共享知识空间"：目前哪些信息还没有可靠来源？如果检索不到，哪些问题需要直接问我？
                 </p>
               </div>
             </div>
-            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-bronze">
+            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-accent">
               MODERATOR OVERRIDE · 发现未充分讨论的信息
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-seal">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-accent-deep">
                 <SpeakerDot color="seal" />
                 Moderator
                 <br />
                 主持人
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-seal bg-seal-tint px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-accent-deep bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   目前已经覆盖了职责和响应等级，但"物资数量、责任单位、联系人、时间节点"仍没有检索片段或引用支撑。建议先扩展知识地图，再进入大纲生成。
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-bronze">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-accent">
                 <SpeakerDot color="bronze" />
                 Human User
                 <br />
                 用户
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-bronze bg-bronze-tint px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-accent bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   物资数量由应急管理部门提供；联系人和具体时间我来补充。请把这些内容保留为未解决问题，不要从模型记忆中补写。
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 Moderator + Experts
                 <br />
                 协作结果
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   已更新动态知识地图：政策依据、职责分工、响应等级已挂接出处；物资数量、联系人和时间节点保留为未解决问题。系统可以继续组织层级大纲，但不会把无来源内容写入报告。
                 </p>
               </div>
             </div>
-            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-bronze">
+            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-accent">
               ROUND 02 · 从"职责"追到"可执行边界"
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 Policy Expert
                 <br />
                 政策专家
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   "加强巡查、及时转移"仍然偏抽象。要写成可执行条款，还需要明确触发条件、执行主体、完成时限和报告对象。
                 </p>
@@ -217,13 +217,13 @@ export default function Slide08StormDialogue() {
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 Implementation Expert
                 <br />
                 执行专家
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   建议把"重点区域人员转移"拆成三步：风险研判后由谁发布指令、由谁组织转移、转移完成后向谁反馈。每一步都应挂接来源或责任人。
                 </p>
@@ -231,29 +231,29 @@ export default function Slide08StormDialogue() {
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-bronze">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-accent">
                 <SpeakerDot color="bronze" />
                 Human User
                 <br />
                 用户
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-bronze bg-bronze-tint px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-accent bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   责任单位是区应急管理局，乡镇负责执行；但具体转移时限还在和区防指确认，请不要写成确定数字。
                 </p>
               </div>
             </div>
-            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-bronze">
+            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-accent">
               ROUND 03 · 检索结果出现冲突
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 General Knowledge
                 <br />
                 Provider · 通用专家
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   检索到两份文件：一份规定由乡镇汇总灾情，另一份要求由行业主管部门直接报送。两者可能适用不同事件类型，不能直接合并。
                 </p>
@@ -261,69 +261,69 @@ export default function Slide08StormDialogue() {
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-seal">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-accent-deep">
                 <SpeakerDot color="seal" />
                 Moderator
                 <br />
                 主持人
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-seal bg-seal-tint px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-accent-deep bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   发现"灾情报送主体"存在来源冲突。请政策专家优先核对文件效力和适用范围，暂缓生成这一段，避免把不同场景的规定拼在一起。
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 Policy Expert
                 <br />
                 政策专家
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   核对后确认：旧文件已被新预案替代；新预案规定乡镇先报属地指挥部，行业主管部门另行报送专业灾情。两条路径都保留，但适用条件不同。
                 </p>
                 <CostormSource>现行预案 · 废止关系 · 分级报送</CostormSource>
               </div>
             </div>
-            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-bronze">
+            <div className="my-[18px] mb-0.5 ml-[212px] font-mono text-[0.65rem] tracking-[0.08em] text-accent">
               ROUND 04 · 从知识收集进入写作准备
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 Moderator + Experts
                 <br />
                 协作结果
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   共享知识空间已更新：①责任单位——已有来源；②转移时限——用户待确认；③灾情报送路径——已核验并区分场景；④物资数量——仍待检索。可以进入层级大纲评审，不建议直接生成全文。
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] border-b border-line-soft py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-bronze">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-accent">
                 <SpeakerDot color="bronze" />
                 Human User
                 <br />
                 用户
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-bronze bg-bronze-tint px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-accent bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   确认层级大纲方向：把"组织领导、响应流程、保障措施"作为三节；保障措施中的物资数量继续保留为未解决问题，等我提供清单后再写。
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-[190px_1fr] items-start gap-[22px] py-[18px]">
-              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-dim">
+              <div className="pt-2 text-right font-mono text-[0.72rem] tracking-[0.03em] text-ink-2">
                 <SpeakerDot color="slate" />
                 System State
                 <br />
                 系统状态
               </div>
-              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-slate bg-bg-card px-[22px] py-4 text-[0.88rem] leading-[1.6]">
+              <div className="max-w-[900px] rounded-[10px] border border-line border-l-4 border-l-muted bg-panel px-[22px] py-4 text-[0.88rem] leading-[1.6]">
                 <p className="m-0">
                   已形成可追溯写作输入：每一节都有层级位置、对话依据、引用来源和未解决问题。后续写作者只使用已核验信息，缺少来源的内容保留为显式占位。
                 </p>
@@ -334,12 +334,12 @@ export default function Slide08StormDialogue() {
 
         <div className={`w-full ${tab === 'result' ? 'block' : 'hidden'}`}>
           <div
-            className="mx-auto h-[650px] w-full max-w-[1320px] overflow-y-auto rounded-xl border border-line bg-[rgba(251,249,242,0.72)] px-[34px] py-7 [scrollbar-color:rgba(140,109,18,0.58)_var(--color-bg-card-2)]"
+            className="mx-auto h-[650px] w-full max-w-[1320px] overflow-y-auto rounded-xl border border-line bg-[rgba(255,255,255,0.72)] px-[34px] py-7 [scrollbar-color:rgba(37,99,235,0.5)_var(--color-panel-2)]"
             aria-label="Co-STORM 动态知识地图与生成结果"
           >
             <div className="grid grid-cols-2 items-start gap-7">
-              <div className="rounded-[10px] border border-line bg-bg-card px-6 py-[22px]">
-                <div className="font-mono text-[0.67rem] tracking-[0.08em] text-bronze uppercase">
+              <div className="rounded-[10px] border border-line bg-panel px-6 py-[22px]">
+                <div className="font-mono text-[0.67rem] tracking-[0.08em] text-accent uppercase">
                   Dynamic Mind Map
                 </div>
                 <h3 className="my-2 mb-3.5 font-display text-[1.12rem]">共享知识空间</h3>
@@ -351,7 +351,7 @@ export default function Slide08StormDialogue() {
                       <li className="my-2">
                         <TreeDot />
                         政策依据
-                        <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-slate">
+                        <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-muted">
                           现行预案 · 文件效力已核验
                         </span>
                       </li>
@@ -362,14 +362,14 @@ export default function Slide08StormDialogue() {
                           <li className="my-2">
                             <TreeDot />
                             区应急管理局牵头
-                            <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-slate">
+                            <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-muted">
                               职责分工 · 已挂接来源
                             </span>
                           </li>
                           <li className="my-2">
                             <TreeDot />
                             乡镇负责执行
-                            <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-slate">
+                            <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-muted">
                               乡镇职责 · 已挂接来源
                             </span>
                           </li>
@@ -390,7 +390,7 @@ export default function Slide08StormDialogue() {
                           <li className="my-2">
                             <TreeDot />
                             灾情报送：按场景区分路径
-                            <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-slate">
+                            <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-muted">
                               新预案 · 分级报送
                             </span>
                           </li>
@@ -399,7 +399,7 @@ export default function Slide08StormDialogue() {
                       <li className="my-2">
                         <TreeDot />
                         保障措施
-                        <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-slate">
+                        <span className="mt-0.5 ml-[17px] block font-mono text-[0.62rem] text-muted">
                           物资数量 · 未解决问题
                         </span>
                       </li>
@@ -407,51 +407,51 @@ export default function Slide08StormDialogue() {
                   </li>
                 </ul>
               </div>
-              <div className="rounded-[10px] border border-line bg-bg-card px-6 py-[22px]">
-                <div className="font-mono text-[0.67rem] tracking-[0.08em] text-bronze uppercase">
+              <div className="rounded-[10px] border border-line bg-panel px-6 py-[22px]">
+                <div className="font-mono text-[0.67rem] tracking-[0.08em] text-accent uppercase">
                   Hierarchical Outline
                 </div>
                 <h3 className="my-2 mb-3.5 font-display text-[1.12rem]">由对话组织出的层级大纲</h3>
                 <div className="flex flex-col gap-2">
-                  <div className="flex items-start gap-3 rounded-[7px] border border-line-soft bg-bg-card-2 px-3 py-2.5 text-[0.78rem] leading-[1.45]">
-                    <b className="shrink-0 font-mono text-[0.68rem] text-bronze">1</b>
+                  <div className="flex items-start gap-3 rounded-[7px] border border-line-soft bg-panel-2 px-3 py-2.5 text-[0.78rem] leading-[1.45]">
+                    <b className="shrink-0 font-mono text-[0.68rem] text-accent">1</b>
                     <span>总体要求：说明依据、目标和适用范围。</span>
                   </div>
-                  <div className="flex items-start gap-3 rounded-[7px] border border-line-soft bg-bg-card-2 px-3 py-2.5 text-[0.78rem] leading-[1.45]">
-                    <b className="shrink-0 font-mono text-[0.68rem] text-bronze">2</b>
+                  <div className="flex items-start gap-3 rounded-[7px] border border-line-soft bg-panel-2 px-3 py-2.5 text-[0.78rem] leading-[1.45]">
+                    <b className="shrink-0 font-mono text-[0.68rem] text-accent">2</b>
                     <span>组织领导：区级牵头、乡镇执行、部门协同。</span>
                   </div>
-                  <div className="flex items-start gap-3 rounded-[7px] border border-line-soft bg-bg-card-2 px-3 py-2.5 text-[0.78rem] leading-[1.45]">
-                    <b className="shrink-0 font-mono text-[0.68rem] text-bronze">3</b>
+                  <div className="flex items-start gap-3 rounded-[7px] border border-line-soft bg-panel-2 px-3 py-2.5 text-[0.78rem] leading-[1.45]">
+                    <b className="shrink-0 font-mono text-[0.68rem] text-accent">3</b>
                     <span>响应流程：研判、转移、报送及闭环反馈。</span>
                   </div>
-                  <div className="flex items-start gap-3 rounded-[7px] border border-line-soft bg-bg-card-2 px-3 py-2.5 text-[0.78rem] leading-[1.45]">
-                    <b className="shrink-0 font-mono text-[0.68rem] text-bronze">4</b>
+                  <div className="flex items-start gap-3 rounded-[7px] border border-line-soft bg-panel-2 px-3 py-2.5 text-[0.78rem] leading-[1.45]">
+                    <b className="shrink-0 font-mono text-[0.68rem] text-accent">4</b>
                     <span>保障措施：物资、联系人和时间安排仍需补充来源。</span>
                   </div>
                 </div>
               </div>
-              <div className="col-span-2 rounded-[10px] border border-line bg-bg-card px-6 py-[22px]">
-                <div className="font-mono text-[0.67rem] tracking-[0.08em] text-bronze uppercase">
+              <div className="col-span-2 rounded-[10px] border border-line bg-panel px-6 py-[22px]">
+                <div className="font-mono text-[0.67rem] tracking-[0.08em] text-accent uppercase">
                   Cited Draft · 仅使用已收集信息
                 </div>
                 <h3 className="my-2 mb-3.5 font-display text-[1.12rem]">生成结果片段</h3>
-                <div className="border-l-[3px] border-l-seal bg-seal-tint px-[18px] py-3.5 font-display text-[0.92rem] leading-[1.75] text-ink">
+                <div className="border-l-[3px] border-l-accent-deep bg-accent-wash px-[18px] py-3.5 font-display text-[0.92rem] leading-[1.75] text-ink">
                   各乡镇、有关部门要按照现行防汛应急预案明确的职责分工，做好风险研判、重点区域巡查、人员转移和灾情报送工作。区应急管理局负责统筹协调，乡镇负责组织执行；灾情报送应根据事件类型分别按照属地指挥部和行业主管部门规定的路径办理。
                   <br />
                   <br />
-                  <span className="font-mono text-[0.65rem] text-slate">
-                    <span className="text-bronze">检索 / </span>
+                  <span className="font-mono text-[0.65rem] text-muted">
+                    <span className="text-accent">检索 / </span>
                     依据：现行防汛应急预案 · 职责分工 · 分级报送
                   </span>
                 </div>
               </div>
-              <div className="col-span-2 rounded-[10px] border border-line bg-bg-card px-6 py-[22px]">
-                <div className="font-mono text-[0.67rem] tracking-[0.08em] text-bronze uppercase">
+              <div className="col-span-2 rounded-[10px] border border-line bg-panel px-6 py-[22px]">
+                <div className="font-mono text-[0.67rem] tracking-[0.08em] text-accent uppercase">
                   Open Questions
                 </div>
                 <h3 className="my-2 mb-3.5 font-display text-[1.12rem]">主持人保留下来的未解决问题</h3>
-                <p className="m-0 text-[0.82rem] leading-[1.6] text-ink-dim">
+                <p className="m-0 text-[0.82rem] leading-[1.6] text-ink-2">
                   物资具体数量、联系人、转移时限尚未获得可靠来源。Co-STORM 不用模型记忆填空，而是把它们作为下一轮用户输入或检索任务。
                 </p>
               </div>

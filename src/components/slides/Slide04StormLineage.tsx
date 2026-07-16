@@ -19,7 +19,7 @@ export default function Slide04StormLineage() {
         <Chip>30k+ ★ GitHub</Chip>
       </div>
       <Content>
-        <p className="mx-auto mb-7 max-w-[68ch] text-center text-[31.2px] leading-[1.7] text-ink-dim">
+        <p className="mx-auto mb-7 max-w-[68ch] text-center text-[31.2px] leading-[1.7] text-ink-2">
           STORM（Synthesis of Topic Outlines through Retrieval and Multi-perspective，即"通过检索与多视角提问的主题大纲合成"）是斯坦福 OVAL 实验室在 NAACL 2024 发表的开源项目，其核心思路是"先检索、后动笔"——通过多视角提问系统性地收集知识，再生成大纲逐节撰写，实现了从零到完整长文的自动生成，已成为 research agent 领域的基础范式。
         </p>
         <div className="flex w-full items-start">
@@ -29,14 +29,14 @@ export default function Slide04StormLineage() {
                 <div
                   className={`mb-8 flex h-[58px] w-[58px] items-center justify-center rounded-full border-2 font-mono text-[1.2rem] font-bold ${
                     index === steps.length - 1
-                      ? 'border-bronze bg-bronze-tint text-bronze'
-                      : 'border-slate bg-bg-card text-slate'
+                      ? 'border-accent bg-accent-wash text-accent-deep'
+                      : 'border-line-2 bg-panel text-muted'
                   }`}
                 >
                   {step.num}
                 </div>
                 <h4 className="m-0 mb-4 font-display text-[1.12rem]">{step.title}</h4>
-                <p className="m-0 text-[0.92rem] leading-[1.6] text-ink-dim">{step.desc}</p>
+                <p className="m-0 text-[0.92rem] leading-[1.6] text-ink-2">{step.desc}</p>
               </div>
               {index < steps.length - 1 ? (
                 <div className="mt-14 h-[1.5px] w-11 shrink-0 bg-line" />

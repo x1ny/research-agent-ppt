@@ -12,22 +12,31 @@
   --radius-3xl: 24px;
   --radius-4xl: 32px;
 
-  --color-bg: #EFEBDD;
-  --color-bg-card: #FBF9F2;
-  --color-bg-card-2: #F3EEE0;
-  --color-ink: #2A241D;
-  --color-ink-dim: #6E6455;
-  --color-seal: #A6332A;
-  --color-seal-tint: rgba(166, 51, 42, 0.09);
-  --color-bronze: #8C6D12;
-  --color-bronze-tint: rgba(140, 109, 18, 0.09);
-  --color-slate: #3D5163;
-  --color-slate-tint: rgba(61, 81, 99, 0.09);
-  --color-line: rgba(42, 36, 29, 0.18);
-  --color-line-soft: rgba(42, 36, 29, 0.10);
-  --font-display: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
-  --font-body: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", Consolas, "Courier New", monospace;
+  --color-bg: #f4f6fa;
+  --color-panel: #ffffff;
+  --color-panel-2: #eef2f8;
+  --color-panel-3: #e7edf6;
+  --color-ink: #111a2b;
+  --color-ink-2: #37445e;
+  --color-muted: #65728c;
+  --color-muted-tint: rgba(101, 114, 140, 0.09);
+  --color-faint: #9aa6ba;
+  --color-accent: #2563eb;
+  --color-accent-deep: #1d4ed8;
+  --color-accent-dim: #9db8ee;
+  --color-accent-wash: #eaf1fe;
+  --color-pos: #0f9d6e;
+  --color-neg: #dc5b4b;
+  --color-neg-wash: #fdeee9;
+  --color-neg-dim: #f3c9bd;
+  --color-neg-deep: #b5503f;
+  --color-amber: #d9883a;
+  --color-line: #e2e7f0;
+  --color-line-2: #d2dae7;
+  --color-line-soft: rgba(17, 26, 43, 0.06);
+  --font-display: "Space Grotesk", "Noto Sans SC", -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Noto Sans SC", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Noto Sans SC", ui-monospace, monospace;
 }
 
 @layer base {
@@ -45,31 +54,19 @@
     font-size: 24px;
     background-color: var(--color-bg);
     background-image:
-      repeating-linear-gradient(
-        0deg,
-        rgba(42, 36, 29, 0.055) 0px,
-        rgba(42, 36, 29, 0.055) 1px,
-        transparent 1px,
-        transparent 36px
-      ),
-      repeating-linear-gradient(
-        90deg,
-        rgba(42, 36, 29, 0.055) 0px,
-        rgba(42, 36, 29, 0.055) 1px,
-        transparent 1px,
-        transparent 36px
-      );
+      radial-gradient(1300px 760px at 82% -14%, #e8eefb 0%, transparent 55%),
+      radial-gradient(1000px 640px at 4% 116%, #eef2fb 0%, transparent 52%);
     color: var(--color-ink);
     font-family: var(--font-body);
   }
 
   ::selection {
-    background: var(--color-seal);
+    background: var(--color-accent);
     color: #fff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-seal);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
 }

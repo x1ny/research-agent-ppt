@@ -14,8 +14,8 @@ export default function DotNav({ total, current, onSelect }: Props) {
         <button
           key={i}
           type="button"
-          className={`cursor-pointer border-none bg-line p-0 transition-all duration-250 ease-in-out ${
-            i === current ? 'h-[22px] w-[7px] rounded-[5px] bg-seal' : 'h-[7px] w-[7px] rounded-full'
+          className={`cursor-pointer border-none p-0 transition-all duration-250 ease-in-out ${
+            i === current ? 'h-[22px] w-[7px] rounded-[5px] bg-accent' : 'h-[7px] w-[7px] rounded-full bg-line'
           }`}
           aria-label={`跳转到第 ${i + 1} 页`}
           aria-current={i === current ? 'true' : undefined}

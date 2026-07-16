@@ -6,7 +6,7 @@ export default function Slide18QA() {
       <Eyebrow>谢谢</Eyebrow>
       <SlideTitle style={{ fontSize: '68px' }}>Q&A</SlideTitle>
       <HeadRule />
-      <p className="m-0 mb-2 max-w-[62ch] text-[31.2px] leading-[1.7] text-ink-dim">欢迎提问与讨论</p>
+      <p className="m-0 mb-2 max-w-[62ch] text-[31.2px] leading-[1.7] text-ink-2">欢迎提问与讨论</p>
     </SlideShell>
   )
 }

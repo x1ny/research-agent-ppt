@@ -18,12 +18,12 @@ export default function Slide03ProblemAbstract() {
       <Content className="translate-y-5">
         <div className="flex w-full flex-col flex-nowrap items-center justify-center gap-3">
           <FlowNode
-            accent="red"
+            accent="dim"
             title={<span className="text-base">表面任务：公文写作</span>}
             subtitle={<span className="text-[0.76rem] leading-[1.45]">强规则 · 强事实 · 强结构</span>}
             className="min-w-[240px] shrink grow-0 basis-auto px-5 py-[18px] text-center"
           />
-          <div className="shrink-0 text-ink-dim opacity-75">
+          <div className="shrink-0 text-ink-2 opacity-75">
             <svg className="block h-6 w-6">
               <use href="#ic-ad" />
             </svg>
@@ -35,7 +35,7 @@ export default function Slide03ProblemAbstract() {
             }
             className="min-w-[290px] shrink grow-0 basis-auto px-5 py-[18px] text-center"
           />
-          <div className="shrink-0 text-ink-dim opacity-75">
+          <div className="shrink-0 text-ink-2 opacity-75">
             <svg className="block h-6 w-6">
               <use href="#ic-ad" />
             </svg>
@@ -43,7 +43,7 @@ export default function Slide03ProblemAbstract() {
           <Chip variant="gold" className="px-2.5 py-2 text-[0.76rem]">
             问题抽象 / 类比迁移
           </Chip>
-          <div className="shrink-0 text-ink-dim opacity-75">
+          <div className="shrink-0 text-ink-2 opacity-75">
             <svg className="block h-6 w-6">
               <use href="#ic-ad" />
             </svg>

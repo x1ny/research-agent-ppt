@@ -8,7 +8,7 @@ export default function Slide01Title() {
         公文写作 Agent
       </SlideTitle>
       <HeadRule />
-      <p className="m-0 mb-2 max-w-[62ch] text-[33.6px] leading-[1.7] text-ink-dim">
+      <p className="m-0 mb-2 max-w-[62ch] text-[33.6px] leading-[1.7] text-ink-2">
         技术探索与整体设计思路
       </p>
       <div className="mt-14 flex flex-wrap gap-6">

@@ -8,16 +8,16 @@ export default function Slide02WhyNotBareModel() {
       <Content>
         <div className="grid w-full max-w-[1200px] grid-cols-2 gap-10">
           <div className="flex items-start gap-9 rounded-[10px] border border-line bg-panel px-12 py-11">
-            <div className="shrink-0 font-display text-[2.2rem] font-bold leading-none text-neg">01</div>
+            <div className="shrink-0 font-display text-[2.2rem] font-bold leading-none text-accent">01</div>
             <div className="min-w-0 flex-1">
               <h3 className="m-0 mb-3 font-display text-[1.15rem]">事实幻觉</h3>
               <p className="m-0 text-[0.95rem] leading-[1.7] text-ink-2">
-                编造政策文号、编造数据、张冠李戴的部门职责。公文里的"合理编造"是<b className="text-neg">事故</b>，不是瑕疵。
+                编造政策文号、编造数据、张冠李戴的部门职责。公文里的"合理编造"是<b className="text-accent">事故</b>，不是瑕疵。
               </p>
             </div>
           </div>
           <div className="flex items-start gap-9 rounded-[10px] border border-line bg-panel px-12 py-11">
-            <div className="shrink-0 font-display text-[2.2rem] font-bold leading-none text-neg">02</div>
+            <div className="shrink-0 font-display text-[2.2rem] font-bold leading-none text-accent">02</div>
             <div className="min-w-0 flex-1">
               <h3 className="m-0 mb-3 font-display text-[1.15rem]">格式与文种刚性</h3>
               <p className="m-0 text-[0.95rem] leading-[1.7] text-ink-2">
@@ -26,7 +26,7 @@ export default function Slide02WhyNotBareModel() {
             </div>
           </div>
           <div className="flex items-start gap-9 rounded-[10px] border border-line bg-panel px-12 py-11">
-            <div className="shrink-0 font-display text-[2.2rem] font-bold leading-none text-neg">03</div>
+            <div className="shrink-0 font-display text-[2.2rem] font-bold leading-none text-accent">03</div>
             <div className="min-w-0 flex-1">
               <h3 className="m-0 mb-3 font-display text-[1.15rem]">文风偏离</h3>
               <p className="m-0 text-[0.95rem] leading-[1.7] text-ink-2">
@@ -35,7 +35,7 @@ export default function Slide02WhyNotBareModel() {
             </div>
           </div>
           <div className="flex items-start gap-9 rounded-[10px] border border-line bg-panel px-12 py-11">
-            <div className="shrink-0 font-display text-[2.2rem] font-bold leading-none text-neg">04</div>
+            <div className="shrink-0 font-display text-[2.2rem] font-bold leading-none text-accent">04</div>
             <div className="min-w-0 flex-1">
               <h3 className="m-0 mb-3 font-display text-[1.15rem]">长文失控</h3>
               <p className="m-0 text-[0.95rem] leading-[1.7] text-ink-2">

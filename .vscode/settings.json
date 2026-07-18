@@ -1,0 +1,9 @@
+{
+  "search.exclude": {
+    "**/reference-projects/storm": true
+  },
+  "files.watcherExclude": {
+    "**/reference-projects/storm/**": true
+  },
+  "search.follow symlinks": false
+}

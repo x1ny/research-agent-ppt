@@ -3,6 +3,7 @@ import Slide02WhyNotBareModel from './Slide02WhyNotBareModel'
 import Slide03ProblemAbstract from './Slide03ProblemAbstract'
 import Slide04StormLineage from './Slide04StormLineage'
 import Slide05StormCoreFlow from './Slide05StormCoreFlow'
+import Slide05_01KnowledgeCuration from './Slide05_01KnowledgeCuration'
 import Slide06FiveLinks from './Slide06FiveLinks'
 import Slide07QueryIntent from './Slide07QueryIntent'
 import Slide08Perspective from './Slide08Perspective'
@@ -24,6 +25,7 @@ export const slides = [
   Slide03ProblemAbstract,
   Slide04StormLineage,
   Slide05StormCoreFlow,
+  Slide05_01KnowledgeCuration,
   Slide06FiveLinks,
   Slide07QueryIntent,
   Slide08Perspective,

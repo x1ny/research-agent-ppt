@@ -4,6 +4,7 @@ import Slide03ProblemAbstract from './Slide03ProblemAbstract'
 import Slide04StormLineage from './Slide04StormLineage'
 import Slide05StormCoreFlow from './Slide05StormCoreFlow'
 import Slide05_01KnowledgeCuration from './Slide05_01KnowledgeCuration'
+import Slide05_02PersonaGeneration from './Slide05_02PersonaGeneration'
 import Slide06FiveLinks from './Slide06FiveLinks'
 import Slide07QueryIntent from './Slide07QueryIntent'
 import Slide08Perspective from './Slide08Perspective'
@@ -26,6 +27,7 @@ export const slides = [
   Slide04StormLineage,
   Slide05StormCoreFlow,
   Slide05_01KnowledgeCuration,
+  Slide05_02PersonaGeneration,
   Slide06FiveLinks,
   Slide07QueryIntent,
   Slide08Perspective,

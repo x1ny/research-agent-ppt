@@ -4,6 +4,7 @@ type Props = {
   code: string
   fileLabel?: string
   dense?: boolean
+  scrollable?: boolean
   className?: string
   style?: CSSProperties
 }
@@ -60,6 +61,7 @@ export default function CodeBlock({
   code,
   fileLabel,
   dense = false,
+  scrollable = false,
   className = '',
   style,
 }: Props) {
@@ -79,11 +81,13 @@ export default function CodeBlock({
         </div>
       ) : null}
       <pre
-        className={`m-0 overflow-x-auto font-mono text-[#dbe4f3] ${dense ? 'px-5 py-3 text-[0.64rem] leading-[1.42]' : 'px-7 py-6 text-[0.82rem] leading-[1.75]'}`}
+        className={`m-0 overflow-x-hidden font-mono text-[#dbe4f3] ${
+          scrollable ? 'max-h-[460px] overflow-auto' : ''
+        } ${dense ? 'px-5 py-3 text-[0.64rem] leading-[1.42]' : 'px-7 py-6 text-[0.82rem] leading-[1.75]'}`}
       >
         <code>
           {lines.map((line, i) => (
-            <div key={i} className="whitespace-pre">
+            <div key={i} className="whitespace-pre-wrap break-words">
               {highlightLine(line, i)}
             </div>
           ))}

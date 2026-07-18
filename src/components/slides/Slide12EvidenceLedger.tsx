@@ -1,11 +1,10 @@
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide11EvidenceLedger() {
+export default function Slide12EvidenceLedger() {
   return (
     <SlideShell>
       <Eyebrow>环节二 · 检索与范文</Eyebrow>
       <SlideTitle>查询改写 —— 把用户意图翻译成检索任务</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="grid w-full max-w-[1500px] grid-cols-[1.05fr_34px_1.1fr_34px_1.35fr_34px_1.2fr] items-stretch gap-3">
           <div className="min-h-[320px] rounded-[10px] border border-line border-l-4 border-l-accent-dim bg-panel p-[22px]">

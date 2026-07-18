@@ -1,4 +1,4 @@
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
 const perspectives = [
   {
@@ -43,14 +43,11 @@ const rounds = [
   },
 ] as const
 
-export default function Slide06QueryIntent() {
+export default function Slide07QueryIntent() {
   return (
     <SlideShell>
       <Eyebrow>STORM 机制一 · 二</Eyebrow>
       <SlideTitle>多视角提问 + 模拟对话</SlideTitle>
-      <div className="[&>div]:!mb-4">
-        <HeadRule />
-      </div>
       <Content className="justify-start">
         <div className="grid w-full max-w-[1400px] grid-cols-[340px_1fr] items-start gap-[72px]">
           <div className="flex w-full flex-col gap-2.5">

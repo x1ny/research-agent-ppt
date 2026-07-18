@@ -1,11 +1,10 @@
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide14DraftWorkbench() {
+export default function Slide15DraftWorkbench() {
   return (
     <SlideShell>
       <Eyebrow>环节四 · 多轮取证</Eyebrow>
       <SlideTitle>证据整编：让知识库 Agent 越问越深</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="w-full max-w-[1480px] overflow-hidden rounded-xl border border-line bg-panel">
           <div className="flex items-center gap-3.5 border-b border-line bg-panel-2 px-[22px] py-[15px]">

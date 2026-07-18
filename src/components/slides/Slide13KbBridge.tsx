@@ -1,11 +1,10 @@
-import { Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide12KbBridge() {
+export default function Slide13KbBridge() {
   return (
     <SlideShell>
       <Eyebrow>环节三 · 上</Eyebrow>
       <SlideTitle>范文解析：从成文样本提取结构骨架</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="grid w-full max-w-[1480px] grid-cols-[1.12fr_1fr_1fr] items-stretch gap-6">
           <div className="min-h-[470px] rounded-[10px] border border-line bg-panel px-[26px] py-6">

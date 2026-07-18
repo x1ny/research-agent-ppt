@@ -1,11 +1,10 @@
-import { Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide16NextResearch() {
+export default function Slide17NextResearch() {
   return (
     <SlideShell>
       <Eyebrow>收尾 · 上</Eyebrow>
       <SlideTitle>交给下一棒：润色与格式渲染</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="flex w-full flex-wrap gap-12">
           <div className="min-w-[280px] flex-1 rounded-[10px] border border-line border-l-[3px] border-l-dashed border-l-accent bg-panel px-[52px] py-12">

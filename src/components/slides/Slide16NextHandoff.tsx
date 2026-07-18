@@ -1,11 +1,10 @@
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide15NextHandoff() {
+export default function Slide16NextHandoff() {
   return (
     <SlideShell>
       <Eyebrow>环节五 · 成文与渲染</Eyebrow>
       <SlideTitle>段落生成：从大纲节点装配出可引用段落</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="w-full max-w-[1480px] overflow-hidden rounded-xl border border-line bg-panel">
           <div className="flex items-center justify-between gap-5 border-b border-line bg-panel-2 px-[22px] py-[15px]">

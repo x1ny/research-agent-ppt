@@ -1,11 +1,10 @@
-import { Caption, Content, Eyebrow, FlowNode, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, FlowNode, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide09CoStorm() {
+export default function Slide10CoStorm() {
   return (
     <SlideShell>
       <Eyebrow>整体流程</Eyebrow>
       <SlideTitle>五个环节：从材料到成文</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="flex w-full flex-wrap items-center gap-8">
           <FlowNode accent="dim" title="① 建立公文知识库" subtitle="内容 · 结构 · 来源" />

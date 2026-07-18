@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
 function SpeakerDot({ color }: { color: 'slate' | 'seal' | 'bronze' }) {
   const bg = color === 'seal' ? 'bg-accent-deep' : color === 'bronze' ? 'bg-accent' : 'bg-muted'
@@ -23,7 +23,7 @@ function TreeDot({ accent }: { accent?: 'seal' | 'slate' }) {
   )
 }
 
-export default function Slide08StormDialogue() {
+export default function Slide09StormDialogue() {
   const [tab, setTab] = useState<'dialogue' | 'result'>('dialogue')
 
   const tabBase =
@@ -35,9 +35,6 @@ export default function Slide08StormDialogue() {
     <SlideShell>
       <Eyebrow>附录 · 研究参考</Eyebrow>
       <SlideTitle>Co-STORM 对话机制样例</SlideTitle>
-      <div className="-mb-2">
-        <HeadRule />
-      </div>
       <Content className="justify-start">
         <div
           className="mx-auto mb-3 flex w-full max-w-[1320px] gap-2.5"

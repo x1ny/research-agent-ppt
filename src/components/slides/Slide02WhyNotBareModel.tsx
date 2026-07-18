@@ -1,11 +1,10 @@
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
 export default function Slide02WhyNotBareModel() {
   return (
     <SlideShell>
       <Eyebrow>问题 · 01</Eyebrow>
       <SlideTitle>为什么不能直接让"裸模型"写公文</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="grid w-full max-w-[1200px] grid-cols-2 gap-10">
           <div className="flex items-start gap-9 rounded-[10px] border border-line bg-panel px-12 py-11">

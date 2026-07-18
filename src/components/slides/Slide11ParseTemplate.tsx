@@ -1,11 +1,10 @@
-import { Caption, Chip, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Chip, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide10ParseTemplate() {
+export default function Slide11ParseTemplate() {
   return (
     <SlideShell>
       <Eyebrow>环节一 · 知识底座</Eyebrow>
       <SlideTitle>公文库搭建</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="relative max-w-[640px] pl-[60px] before:absolute before:top-[6px] before:bottom-[6px] before:left-[9px] before:w-[1.5px] before:bg-line before:content-['']">
           <div className="relative pb-14 before:absolute before:-left-[30px] before:top-[3px] before:h-3 before:w-3 before:rounded-full before:border-[2.5px] before:border-line-2 before:bg-panel before:content-['']">

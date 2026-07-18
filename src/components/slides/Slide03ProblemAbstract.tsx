@@ -4,7 +4,6 @@ import {
   Content,
   Eyebrow,
   FlowNode,
-  HeadRule,
   SlideShell,
   SlideTitle,
 } from '../ui'
@@ -14,7 +13,6 @@ export default function Slide03ProblemAbstract() {
     <SlideShell>
       <Eyebrow>问题 · 02</Eyebrow>
       <SlideTitle>没有对口方案，我们做了一次"问题抽象"</SlideTitle>
-      <HeadRule />
       <Content className="translate-y-5">
         <div className="flex w-full flex-col flex-nowrap items-center justify-center gap-3">
           <FlowNode

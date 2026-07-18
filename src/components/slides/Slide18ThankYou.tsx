@@ -1,11 +1,10 @@
-import { Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide17ThankYou() {
+export default function Slide18ThankYou() {
   return (
     <SlideShell>
       <Eyebrow>收尾 · 下</Eyebrow>
       <SlideTitle>下一步值得研究的方向</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="grid w-full max-w-[1480px] grid-cols-4 gap-6 pt-7">
           <div className="relative min-w-0 max-w-none -rotate-[1.6deg] translate-y-1.5 rounded border border-line bg-panel px-[30px] py-[34px] shadow-[0_8px_18px_rgba(17,26,43,0.10)] before:absolute before:-top-[7px] before:left-1/2 before:h-[11px] before:w-[11px] before:-translate-x-1/2 before:rounded-full before:bg-accent before:shadow-[0_1px_3px_rgba(0,0,0,0.3)] before:content-['']">

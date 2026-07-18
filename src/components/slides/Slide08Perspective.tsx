@@ -1,11 +1,10 @@
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide07Perspective() {
+export default function Slide08Perspective() {
   return (
     <SlideShell>
       <Eyebrow>附录 · 后续增强方向</Eyebrow>
       <SlideTitle>Co-STORM：暂不纳入当前主流程</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="flex w-full justify-center">
           <svg className="h-auto w-full max-w-[1100px]" viewBox="0 0 640 320">

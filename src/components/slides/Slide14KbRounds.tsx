@@ -1,11 +1,10 @@
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide13KbRounds() {
+export default function Slide14KbRounds() {
   return (
     <SlideShell>
       <Eyebrow>环节三 · 下</Eyebrow>
       <SlideTitle>大纲即方向盘 —— 与用户协同确认</SlideTitle>
-      <HeadRule />
       <Content>
         <div className="overflow-hidden rounded-xl border border-line bg-panel">
           <div className="flex items-center gap-4 border-b border-line px-8 py-6">

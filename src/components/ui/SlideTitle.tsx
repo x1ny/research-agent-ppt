@@ -10,7 +10,7 @@ type Props = {
 export default function SlideTitle({ as: Tag = 'h2', className = '', style, children }: Props) {
   return (
     <Tag
-      className={`m-0 mb-1.5 font-display text-[56px] font-bold leading-[1.28] tracking-[0.01em] text-ink ${className}`}
+      className={`m-0 mb-10 font-display text-[36px] font-bold leading-[1.25] tracking-[0.01em] text-ink ${className}`}
       style={style}
     >
       {children}

@@ -1,4 +1,4 @@
-import { Caption, Chip, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Chip, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
 const steps = [
   { num: '1', title: '知识整编', desc: '检索 + 多视角提问' },
@@ -12,7 +12,6 @@ export default function Slide04StormLineage() {
     <SlideShell>
       <Eyebrow>方法论 · STORM</Eyebrow>
       <SlideTitle>STORM —— 这条技术脉络的开山之作</SlideTitle>
-      <HeadRule />
       <div className="-mt-0.5 flex flex-wrap gap-6">
         <Chip>Stanford OVAL</Chip>
         <Chip>NAACL 2024</Chip>

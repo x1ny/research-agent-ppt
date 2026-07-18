@@ -1,11 +1,10 @@
-import { Caption, Content, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
-export default function Slide05FiveLinks() {
+export default function Slide06FiveLinks() {
   return (
     <SlideShell>
       <Eyebrow>STORM 机制一</Eyebrow>
       <SlideTitle>视角引导提问</SlideTitle>
-      <HeadRule />
       <Content className="justify-start gap-6">
         <div className="grid w-full max-w-[1400px] grid-cols-[1fr_38px_1.15fr_38px_1fr] items-stretch">
           <div className="min-h-[214px] rounded-[10px] border border-line border-l-4 border-l-accent-dim bg-panel px-[26px] py-[22px]">

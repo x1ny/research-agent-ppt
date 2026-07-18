@@ -1,4 +1,4 @@
-import { Chip, Eyebrow, HeadRule, SlideShell, SlideTitle } from '../ui'
+import { Chip, Eyebrow, SlideShell, SlideTitle } from '../ui'
 
 export default function Slide01Title() {
   return (
@@ -7,7 +7,6 @@ export default function Slide01Title() {
       <SlideTitle as="h1" className="text-[82px]">
         公文写作 Agent
       </SlideTitle>
-      <HeadRule />
       <p className="m-0 mb-2 max-w-[62ch] text-[33.6px] leading-[1.7] text-ink-2">
         技术探索与整体设计思路
       </p>

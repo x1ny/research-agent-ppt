@@ -9,6 +9,7 @@ import Slide07QueryIntent from './Slide07QueryIntent'
 import Slide07_01DialogueCore from './Slide07_01DialogueCore'
 import Slide07_02DraftOutline from './Slide07_02DraftOutline'
 import Slide07_03WriteOutline from './Slide07_03WriteOutline'
+import Slide07_04ArticleGeneration from './Slide07_04ArticleGeneration'
 import Slide08Perspective from './Slide08Perspective'
 import Slide09StormDialogue from './Slide09StormDialogue'
 import Slide10CoStorm from './Slide10CoStorm'
@@ -34,6 +35,7 @@ export const slides = [
   Slide07_01DialogueCore,
   Slide07_02DraftOutline,
   Slide07_03WriteOutline,
+  Slide07_04ArticleGeneration,
   Slide08Perspective,
   Slide09StormDialogue,
   Slide10CoStorm,

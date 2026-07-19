@@ -1,4 +1,43 @@
-import { Caption, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
+import { useState } from 'react'
+import { Caption, CodeBlock, Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
+
+const dialogueCode = `def forward(self, topic, persona, ground_truth_url, callback_handler):
+    # 共享对话状态：每一轮的问题、回答和检索证据都会追加到这里
+    dlg_history: List[DialogueTurn] = []
+
+    # 最多进行 max_turn 轮，避免模型持续追问而无法结束
+    for _ in range(self.max_turn):
+        # 提问方读取完整历史，结合当前视角决定下一步问什么
+        user_utterance = self.wiki_writer(
+            topic=topic, persona=persona, dialogue_turns=dlg_history
+        ).question
+
+        # 空问题表示生成异常；模型主动致谢则表示已经完成信息收集
+        if user_utterance == "":
+            logging.error("Simulated Wikipedia writer utterance is empty.")
+            break
+        if user_utterance.startswith("Thank you so much for your help!"):
+            break
+
+        # 专家只回答当前问题，并通过检索补充可引用的外部证据
+        expert_output = self.topic_expert(
+            topic=topic, question=user_utterance, ground_truth_url=ground_truth_url
+        )
+
+        # 把本轮问答和证据整理成一条记录，供下一轮继续使用
+        dlg_turn = DialogueTurn(
+            agent_utterance=expert_output.answer,
+            user_utterance=user_utterance,
+            search_queries=expert_output.queries,
+            search_results=expert_output.searched_results,
+        )
+        dlg_history.append(dlg_turn)
+
+        # 实时通知上层：界面或日志可以在每轮结束后立即更新
+        callback_handler.on_dialogue_turn_end(dlg_turn=dlg_turn)
+
+    # 返回完整对话历史，供后续知识整编或大纲生成使用
+    return dspy.Prediction(dlg_history=dlg_history)`
 
 const perspectives = [
   {
@@ -44,11 +83,41 @@ const rounds = [
 ] as const
 
 export default function Slide07QueryIntent() {
+  const [tab, setTab] = useState<'dialogue' | 'code'>('dialogue')
+
   return (
     <SlideShell>
       <Eyebrow>STORM 机制一 · 二</Eyebrow>
       <SlideTitle>多视角提问 + 模拟对话</SlideTitle>
       <Content className="justify-start">
+        <div className="mb-2 flex w-full max-w-[1400px] gap-2.5" role="tablist" aria-label="多视角提问实现视图">
+          <button
+            className={`cursor-pointer rounded-full border px-[22px] py-2.5 font-mono text-[0.72rem] ${
+              tab === 'dialogue'
+                ? 'border-accent-dim bg-accent-wash font-bold text-accent-deep'
+                : 'border-line bg-panel text-ink-2'
+            }`}
+            type="button"
+            role="tab"
+            aria-selected={tab === 'dialogue'}
+            onClick={() => setTab('dialogue')}
+          >
+            模拟对话
+          </button>
+          <button
+            className={`cursor-pointer rounded-full border px-[22px] py-2.5 font-mono text-[0.72rem] ${
+              tab === 'code'
+                ? 'border-accent-dim bg-accent-wash font-bold text-accent-deep'
+                : 'border-line bg-panel text-ink-2'
+            }`}
+            type="button"
+            role="tab"
+            aria-selected={tab === 'code'}
+            onClick={() => setTab('code')}
+          >
+            CODE · 代码实现
+          </button>
+        </div>
         <div className="grid w-full max-w-[1400px] grid-cols-[340px_1fr] items-start gap-[72px]">
           <div className="flex w-full flex-col gap-2.5">
             <div className="mb-2 font-mono text-[0.68rem] tracking-[0.05em] text-ink-2">
@@ -69,7 +138,7 @@ export default function Slide07QueryIntent() {
               </div>
             ))}
           </div>
-          <div className="flex flex-col gap-0">
+          <div className={`flex min-w-0 flex-col gap-0 ${tab === 'dialogue' ? '' : 'hidden'}`}>
             {rounds.map((round, index) => (
               <div key={round.label} className="mb-[22px] flex flex-col gap-2">
                 <div
@@ -101,11 +170,20 @@ export default function Slide07QueryIntent() {
               </div>
             ))}
           </div>
+          <CodeBlock
+            code={dialogueCode}
+            fileLabel="storm_wiki/modules/knowledge_curation.py · forward()"
+            dense
+            scrollable
+            className={`min-w-0 ${tab === 'code' ? 'block' : 'hidden'} h-[600px]`}
+          />
         </div>
-        <Caption className="m-0 text-[0.9rem] leading-[1.6]">
-          多视角解决“从哪些角度问”，对话历史解决“如何越问越深”。每轮均为{' '}
-          <b>提问 → 检索 → 带引用回答 → 基于回答继续追问</b>。
-        </Caption>
+        {tab === 'code' ? (
+          <Caption className="m-0 text-[0.9rem] leading-[1.6]">
+            多视角解决“从哪些角度问”，对话历史解决“如何越问越深”。每轮均为{' '}
+            <b>提问 → 检索 → 带引用回答 → 基于回答继续追问</b>。
+          </Caption>
+        ) : null}
       </Content>
     </SlideShell>
   )

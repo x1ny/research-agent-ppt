@@ -69,7 +69,7 @@ export default function CodeBlock({
 
   return (
     <div
-      className={`overflow-hidden rounded-xl border border-[#1e2a47] bg-[#0d1526] shadow-[0_18px_40px_-24px_rgba(15,23,42,0.55)] ${className}`}
+      className={`flex flex-col overflow-hidden rounded-xl border border-[#1e2a47] bg-[#0d1526] shadow-[0_18px_40px_-24px_rgba(15,23,42,0.55)] ${scrollable ? 'h-[460px]' : ''} ${className}`}
       style={style}
     >
       {fileLabel ? (
@@ -82,7 +82,7 @@ export default function CodeBlock({
       ) : null}
       <pre
         className={`m-0 overflow-x-hidden font-mono text-[#dbe4f3] ${
-          scrollable ? 'max-h-[460px] overflow-auto' : ''
+          scrollable ? 'min-h-0 flex-1 overflow-auto' : ''
         } ${dense ? 'px-5 py-3 text-[0.64rem] leading-[1.42]' : 'px-7 py-6 text-[0.82rem] leading-[1.75]'}`}
       >
         <code>

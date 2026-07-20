@@ -11,6 +11,7 @@ import Slide07_02DraftOutline from './Slide07_02DraftOutline'
 import Slide07_03WriteOutline from './Slide07_03WriteOutline'
 import Slide07_04ArticleGeneration from './Slide07_04ArticleGeneration'
 import Slide07_05ArticlePolish from './Slide07_05ArticlePolish'
+import Slide08StormInsight from './Slide08StormInsight'
 // import Slide08Perspective from './Slide08Perspective'
 // import Slide09StormDialogue from './Slide09StormDialogue'
 import Slide10CoStorm from './Slide10CoStorm'
@@ -38,6 +39,7 @@ export const slides = [
   Slide07_03WriteOutline,
   Slide07_04ArticleGeneration,
   Slide07_05ArticlePolish,
+  Slide08StormInsight,
   // Slide08Perspective,
   // Slide09StormDialogue,
   Slide10CoStorm,

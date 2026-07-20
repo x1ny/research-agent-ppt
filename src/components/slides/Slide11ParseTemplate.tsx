@@ -23,25 +23,22 @@ export default function Slide11ParseTemplate() {
             <div className="mb-2.5 text-[1.1rem] font-bold">形成可复用知识资产</div>
             <div className="mt-5 flex flex-wrap gap-5">
               <Chip variant="dim" withDot>
-                内容摘要库 · 供语义检索
+                文种写作 Skill 库 · 负责“怎么写”
               </Chip>
               <Chip variant="gold" withDot>
-                结构骨架库 · 供大纲解析
-              </Chip>
-              <Chip variant="slate" withDot>
-                来源引用 · 可回到原文
+                主题公文库 · 负责“写什么”
               </Chip>
             </div>
           </div>
           <div className="relative before:absolute before:-left-[30px] before:top-[3px] before:h-3 before:w-3 before:rounded-full before:border-[2.5px] before:border-line-2 before:bg-panel before:content-['']">
             <div className="mb-2.5 text-[1.1rem] font-bold">建立检索索引</div>
             <div className="text-[0.95rem] leading-[1.6] text-ink-2">
-              同时建立语义索引和关键词索引，为后续混合检索提供入口
+              Skill 库按文种调用写作规则，公文库按主题、文种和关键词检索材料；每条材料保留原文与出处
             </div>
           </div>
         </div>
         <Caption>
-          公文不是简单存入文件夹，而是被拆成"内容、结构、来源"三类可复用资产；原文不丢，检索结果可以回到证据。
+          公文底座沉淀两类资产：文种写作 Skill 解决“怎么写”，主题公文库解决“写什么”。
         </Caption>
       </Content>
     </SlideShell>

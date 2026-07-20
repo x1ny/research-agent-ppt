@@ -50,7 +50,7 @@ export const slides = [
   Slide15DraftWorkbench,
   Slide16NextHandoff,
   Slide17NextResearch,
-  Slide18ThankYou,
+  // Slide18ThankYou,
   Slide19QA,
 ] as const
 

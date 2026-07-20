@@ -33,18 +33,20 @@ export default function Slide14KbRounds() {
                 本段要点
               </div>
               <div className="mb-2.5 rounded-lg border border-line bg-bg px-[13px] py-[11px] text-[0.96rem] text-ink">
-                明确检查覆盖的单位范围与重点检查内容
+                明确检查对象、重点内容、执行方式与整改要求
               </div>
               <div className="mb-3.5 mt-7 font-mono text-[0.76rem] uppercase tracking-[0.08em] text-ink-2">
-                所需信息
+                子章节
               </div>
-              <div className="flex items-center gap-4 py-3 text-[0.94rem]">✅ 检查单位清单 · 已有</div>
-              <div className="flex items-center gap-4 py-3 text-[0.94rem]">❓ 本轮重点检查项 · 待补充</div>
+              <div className="flex items-center gap-4 py-2.5 text-[0.94rem]">（一）检查单位范围</div>
+              <div className="flex items-center gap-4 py-2.5 text-[0.94rem]">（二）重点检查内容</div>
+              <div className="flex items-center gap-4 py-2.5 text-[0.94rem]">（三）检查方式与标准</div>
+              <div className="flex items-center gap-4 py-2.5 text-[0.94rem]">（四）问题整改与闭环</div>
             </div>
           </div>
         </div>
         <Caption>
-          大纲错了，写得越细返工越大 → 设强制关卡，用户确认/编辑后才进入写作。未来可让系统主动提示“这个维度的信息还不充分”。
+          大纲错了，写得越细返工越大 → 设强制关卡，用户确认/编辑后才进入写作。
         </Caption>
       </Content>
     </SlideShell>

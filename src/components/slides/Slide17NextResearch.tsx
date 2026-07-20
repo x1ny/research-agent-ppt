@@ -3,7 +3,7 @@ import { Content, Eyebrow, SlideShell, SlideTitle } from '../ui'
 export default function Slide17NextResearch() {
   return (
     <SlideShell>
-      <Eyebrow>收尾 · 上</Eyebrow>
+      <Eyebrow>收尾</Eyebrow>
       <SlideTitle>交给下一棒：润色与格式渲染</SlideTitle>
       <Content>
         <div className="flex w-full flex-wrap gap-12">
